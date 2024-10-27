@@ -13,9 +13,9 @@ try:
         Y_MAP-=1
         X_MAP-=1
     else:
-        X_MAP, Y_MAP = [350, 100]
+        X_MAP, Y_MAP = [20, 20]
 except:
-    X_MAP, Y_MAP = [100, 50]
+    X_MAP, Y_MAP = [20, 20]
 
 time_sleep = None
 if len(sys.argv) == 4:
@@ -29,6 +29,7 @@ if len(sys.argv) == 3:
 if len(sys.argv) == 2:
     _, time_sleep = sys.argv
     time_sleep = float(time_sleep)
+print(len(sys.argv))
 
 MAPPING = {0: " ", 1: "0"}
 
@@ -60,7 +61,7 @@ def render(map):
     screen += f"{'-' * int(X_MAP)}"
     print(screen)
     
-    sleep(0.005 if time_sleep is None else time_sleep)
+    sleep(0.025 if time_sleep is None else time_sleep)
 
 def start():
     map = [[0 for x in range(X_MAP)] for y in range(Y_MAP)]
@@ -81,9 +82,10 @@ while True:
         for x in range(X_MAP):
             if (map[y][x] == 1):
                 if (map[y+1][x] == 0):
-                    # map[y][x] = 0
-                    # map[y+1][x] = 1
-                    # restart = 1
+                    # comment that for more
+                    map[y][x] = 0
+                    map[y+1][x] = 1
+                    restart = 1
                     ...
 
                 else: 
