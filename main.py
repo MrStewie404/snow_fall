@@ -17,6 +17,7 @@ try:
 except:
     X_MAP, Y_MAP = [20, 20]
 
+
 time_sleep = None
 if len(sys.argv) == 4:
     _, X_MAP, Y_MAP, time_sleep = sys.argv
@@ -26,12 +27,14 @@ if len(sys.argv) == 3:
     _, X_MAP, Y_MAP = sys.argv
     X_MAP, Y_MAP = int(X_MAP), int(Y_MAP)
 
-if len(sys.argv) == 2:
-    _, time_sleep = sys.argv
-    time_sleep = float(time_sleep)
-print(len(sys.argv))
+# if len(sys.argv) == 2:
+#     _, time_sleep = sys.argv
+#     time_sleep = float(time_sleep)
+# print(len(sys.argv))
 
-MAPPING = {0: " ", 1: "0"}
+# MAPPING = {0: " ", 1: "⠿", 2: "⠐", 3: "⠴", 4:"⠦", 5: "⠐", 6: "⠉"}
+MAPPING = {i: "█" for i in range(0, 7)}
+MAPPING[0] = " "
 
 def place_on_map(map, place):
     """
@@ -80,22 +83,22 @@ while True:
     restart = 0
     for y in range(Y_MAP-1):
         for x in range(X_MAP):
-            if (map[y][x] == 1):
+            if (map[y][x] > 0):
                 if (map[y+1][x] == 0):
                     # comment that for more
-                    map[y][x] = 0
-                    map[y+1][x] = 1
-                    restart = 1
+                    # map[y][x] = 0
+                    # map[y+1][x] = 1
+                    # restart = 1
                     ...
 
                 else: 
                     if (randint(0, 1) == 0):
-                        if (map[y+1][x-1] == 0):
+                        if (map[y+1][x-1] == 0) and (y < Y_MAP):
                             map[y][x] = 0
                             map[y+1][x-1] = 1
                             restart = 1
 
-                    elif (x < X_MAP-1):
+                    elif (x < X_MAP-1) and (y < Y_MAP):
                         if (map[y+1][x+1] == 0):
                             map[y][x] = 0
                             map[y+1][x+1] = 1
@@ -106,8 +109,47 @@ while True:
                         map[y+1][x-1] = 1
                         restart = 1
 
+                # if (0 < y < Y_MAP-1) and (0 < x < X_MAP-1) and (map[y][x] > 0):
+                #     if      (map[y-1][x-1] == 0) and (map[y-1][x] == 0) and (map[y-1][x+1] == 0) \
+                #         and (map[y][x-1] == 0)   and                        (map[y][x+1] == 0)  \
+                #         and (map[y+1][x-1] == 0) and (map[y+1][x] == 0) and (map[y+1][x+1] == 0): 
+                #         map[y][x] = 2 # .
+
+                #     elif    (map[y-1][x-1] == 0) \
+                #         and (map[y][x-1] == 0) \
+                #         and (map[y+1][x-1] == 0) and (map[y+1][x] == 0) and (map[y+1][x+1] == 0): 
+                #         map[y][x] = 3 # \
+
+                #     elif                                                    (map[y-1][x+1] == 0) \
+                #                                  and                        (map[y][x+1] == 0)  \
+                #         and (map[y+1][x-1] == 0) and (map[y+1][x] == 0) and (map[y+1][x+1] == 0): 
+                #         map[y][x] = 4 # /
+
+                #     elif    (map[y-1][x-1] == 0) and (map[y-1][x] == 0) and (map[y-1][x+1] == 0) \
+                #         and (map[y][x-1] == 0) \
+                #         and (map[y+1][x-1] == 0): 
+                #         map[y][x] = 4 # /
+
+                #     elif    (map[y-1][x-1] == 0) and (map[y-1][x] == 0) and (map[y-1][x+1] == 0) \
+                #                                                         and (map[y][x+1] == 0)  \
+                #                                                         and (map[y+1][x+1] == 0): 
+                #         map[y][x] = 5 # .
+
+                #     elif\
+                #         \
+                #             (map[y+1][x-1] == 0) and (map[y+1][x] == 0) and (map[y+1][x+1] == 0): 
+                #         map[y][x] = 6 # -
+
         y-=2
 
     render(map)
     if restart == 0:
+        for y in range(Y_MAP):
+            for x in range(X_MAP):
+                if map[y][x] > 0:
+                    map[y][x] = 0
+            time_sleep = 0.01
+            if y % 2 == 0:
+                render(map)
+        time_sleep = None
         map = start()
